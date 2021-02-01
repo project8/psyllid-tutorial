@@ -1,0 +1,29 @@
+version: '2'
+
+services:
+    # a rabbit broker
+    rabbit_broker:
+        image: rabbitmq:3-management
+        ports:
+          - "127.0.0.1:8888:15672"
+        ports:
+          - "5672:5672"
+          - "15672:15672"
+        networks:
+            tutorial:
+                aliases:
+                  - broker
+
+    psyllid:
+        image: project8/p8compute:v0.10.1
+        command: >
+            bash -c "source /usr/local/p8/compute/v0.10.1/setup.sh && 
+            psyllid -c /tutorial/str_1ch_dataprod.yaml"
+        volumes:
+          - /path/to/p8tutorial:/tutorial
+        networks:
+          - tutorial
+
+networks:
+    tutorial:
+
